@@ -13,12 +13,7 @@ if __name__ == "__main__":
 
 from RealtimeTTS import (
     TextToAudioStream,
-    AzureEngine,
-    ElevenlabsEngine,
-    SystemEngine,
-    CoquiEngine,
-    OpenAIEngine,
-    KokoroEngine
+    AzureEngine
 )
 
 from fastapi.responses import StreamingResponse, HTMLResponse, FileResponse
@@ -26,6 +21,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Query, Request
 from fastapi.staticfiles import StaticFiles
 
+from dotenv import load_dotenv
 from queue import Queue
 import threading
 import logging
@@ -33,6 +29,8 @@ import uvicorn
 import wave
 import io
 import os
+
+load_dotenv()
 
 PORT = int(os.environ.get("TTS_FASTAPI_PORT", 8000))
 
@@ -360,28 +358,6 @@ if __name__ == "__main__":
             if azure_api_key and azure_region:
                 print("Initializing azure engine")
                 engines["azure"] = AzureEngine(azure_api_key, azure_region)
-
-        if "elevenlabs" == engine_name:
-            elevenlabs_api_key = os.environ.get("ELEVENLABS_API_KEY")
-            if elevenlabs_api_key:
-                print("Initializing elevenlabs engine")
-                engines["elevenlabs"] = ElevenlabsEngine(elevenlabs_api_key)
-
-        if "system" == engine_name:
-            print("Initializing system engine")
-            engines["system"] = SystemEngine()
-
-        if "coqui" == engine_name:
-            print("Initializing coqui engine")
-            engines["coqui"] = CoquiEngine()
-
-        if "kokoro" == engine_name:
-            print("Initializing kokoro engine")
-            engines["kokoro"] = KokoroEngine()
-
-        if "openai" == engine_name:
-            print("Initializing openai engine")
-            engines["openai"] = OpenAIEngine()
 
     for _engine in engines.keys():
         print(f"Retrieving voices for TTS Engine {_engine}")
