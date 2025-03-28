@@ -247,6 +247,8 @@ def set_voice(request: Request, voice_name: str = Query(...)):
 
     try:
         print(f"Setting voice to {voice_name}")
+        # current_engine.set_voice("ko-KR-InJoonNeural")
+        # current_engine.set_voice("ko-KR-SunHiNeural")
         current_engine.set_voice(voice_name)
         return {"message": f"Voice set to {voice_name} successfully"}
     except Exception as e:
@@ -352,7 +354,7 @@ if __name__ == "__main__":
             azure_region = os.environ.get("AZURE_SPEECH_REGION")
             if azure_api_key and azure_region:
                 print("Initializing azure engine")
-                engines["azure"] = AzureEngine(azure_api_key, azure_region, voice="ko-KR-InJoonNeural")
+                engines["azure"] = AzureEngine(azure_api_key, azure_region, voice="ko-KR-SunHiNeural")
 
     for _engine in engines.keys():
         print(f"Retrieving voices for TTS Engine {_engine}")
