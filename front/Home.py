@@ -1,38 +1,41 @@
 import streamlit as st
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
+
+SERVER_URL = os.getenv('SEVER_URL')
 def main():
     st.title("Text-to-Speech Demo")
 
-    # 예시 HTML/JS 코드
-    # (아래 엔드포인트: http://127.0.0.1:8000 은 FastAPI 서버가 동작 중이라고 가정)
-    html_code = """
+    html_code = f"""
     <!DOCTYPE html>
     <html>
     <head>
         <title>Text-To-Speech</title>
         <style>
-            body {
+            body {{
                 font-family: Arial, sans-serif;
                 background-color: #f0f0f0;
                 margin: 0;
                 padding: 0;
-            }
-            h2 {
+            }}
+            h2 {{
                 color: #333;
                 text-align: center;
-            }
-            #container {
+            }}
+            #container {{
                 width: 80%;
                 margin: 50px auto;
                 background-color: #fff;
                 border-radius: 10px;
                 padding: 20px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
-            label {
+            }}
+            label {{
                 font-weight: bold;
-            }
-            select, textarea {
+            }}
+            select, textarea {{
                 width: 100%;
                 padding: 10px;
                 margin: 10px 0;
@@ -40,8 +43,8 @@ def main():
                 border-radius: 5px;
                 box-sizing: border-box;
                 font-size: 16px;
-            }
-            button {
+            }}
+            button {{
                 display: block;
                 width: 100%;
                 padding: 15px;
@@ -52,15 +55,15 @@ def main():
                 font-size: 16px;
                 cursor: pointer;
                 transition: background-color 0.3s;
-            }
-            button:hover {
+            }}
+            button:hover {{
                 background-color: #0056b3;
-            }
-            audio {
+            }}
+            audio {{
                 width: 80%;
                 margin: 10px auto;
                 display: block;
-            }
+            }}
         </style>
     </head>
     <body>
@@ -81,68 +84,68 @@ def main():
         </div>
 
         <script>
-        async function setEngine() {
+        async function setEngine() {{
             var engine = document.getElementById("engine").value;
-            await fetch('http://127.0.0.1:8000/set_engine?engine_name=' + engine);
-        }
+            await fetch('{SERVER_URL}/set_engine?engine_name=' + engine);
+        }}
 
-        async function speak() {
+        async function speak() {{
             var text = document.getElementById("text").value;
-            try {
-                var url = 'http://127.0.0.1:8000/tts?text=' + encodeURIComponent(text);
+            try {{
+                var url = '{SERVER_URL}/tts?text=' + encodeURIComponent(text);
                 var audio = document.getElementById("audio");
                 audio.src = url;
                 audio.play();
-            } catch (error) {
+            }} catch (error) {{
                 console.error('Error during fetch or audio playback:', error);
-            }
-        }
+            }}
+        }}
 
-        async function fetchVoices() {
-            try {
-                var response = await fetch('http://127.0.0.1:8000/voices');
-                if (!response.ok) {
+        async function fetchVoices() {{
+            try {{
+                var response = await fetch('{SERVER_URL}/voices');
+                if (!response.ok) {{
                     throw new Error('Network response was not ok: ' + response.statusText);
-                }
+                }}
                 var data = await response.json();
                 var voicesDropdown = document.getElementById("voice");
                 voicesDropdown.innerHTML = ''; // Clear previous options
-                data.forEach(function(voice) {
+                data.forEach(function(voice) {{
                     var option = document.createElement("option");
                     option.text = voice;
                     option.value = voice;
                     voicesDropdown.add(option);
-                });
-            } catch (error) {
+                }});
+            }} catch (error) {{
                 console.error('Error fetching voices:', error);
-            }
-        }
+            }}
+        }}
 
-        async function setVoice() {
+        async function setVoice() {{
             var voice = document.getElementById("voice").value;
-            try {
-                var response = await fetch('http://127.0.0.1:8000/setvoice?voice_name=' + encodeURIComponent(voice));
-                if (!response.ok) {
+            try {{
+                var response = await fetch('{SERVER_URL}/setvoice?voice_name=' + encodeURIComponent(voice));
+                if (!response.ok) {{
                     throw new Error('Network response was not ok: ' + response.statusText);
-                }
+                }}
                 console.log('Voice set successfully:', voice);
-            } catch (error) {
+            }} catch (error) {{
                 console.error('Error setting voice:', error);
-            }
-        }
+            }}
+        }}
 
-        document.addEventListener('DOMContentLoaded', (event) => {
+        document.addEventListener('DOMContentLoaded', (event) => {{
             document.getElementById("text").value = "This is a text to speech demo text";
             document.getElementById("speakButton").addEventListener("click", speak);
-            document.getElementById("engine").addEventListener("change", async function() {
+            document.getElementById("engine").addEventListener("change", async function() {{
                 await setEngine();
                 await fetchVoices();
-            });
+            }});
             document.getElementById("voice").addEventListener("change", setVoice);
 
             // 초기 로드 시 목소리 목록 가져오기
             fetchVoices();
-        });
+        }});
         </script>
     </body>
     </html>

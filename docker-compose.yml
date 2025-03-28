@@ -1,0 +1,24 @@
+services:
+
+  real-time-frontend:
+    container_name: real-time-frontend
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "8516:8516"
+    networks:
+      - ai-advisor-networks
+  
+  real-time-platform:
+    container_name: real-time-platform
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - ai-advisor-networks
+
+networks:
+  ai-advisor-networks:
+    driver: bridge
