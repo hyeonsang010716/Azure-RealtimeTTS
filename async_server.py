@@ -35,12 +35,7 @@ load_dotenv()
 PORT = int(os.environ.get("TTS_FASTAPI_PORT", 8000))
 
 SUPPORTED_ENGINES = [
-    "azure",
-    "openai",
-    "elevenlabs",
-    "system",
-    # "coqui",  #multiple queries are not supported on coqui engine right now, comment coqui out for tests where you need server start often,
-    "kokoro"
+    "azure"
 ]
 
 # change start engine by moving engine name
@@ -161,7 +156,7 @@ def _set_engine(engine_name):
         current_engine = engines[engine_name]
 
     if voices[engine_name]:
-        engines[engine_name].set_voice(voices[engine_name][0].name)
+        engines[engine_name].set_voice("ko-KR-SunHiNeural")
 
 
 @app.get("/set_engine")
@@ -357,7 +352,7 @@ if __name__ == "__main__":
             azure_region = os.environ.get("AZURE_SPEECH_REGION")
             if azure_api_key and azure_region:
                 print("Initializing azure engine")
-                engines["azure"] = AzureEngine(azure_api_key, azure_region)
+                engines["azure"] = AzureEngine(azure_api_key, azure_region, voice="ko-KR-InJoonNeural")
 
     for _engine in engines.keys():
         print(f"Retrieving voices for TTS Engine {_engine}")
