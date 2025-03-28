@@ -359,22 +359,27 @@ class AzureEngine(BaseEngine):
             print(f"Error {response.status_code}: {response.text}")
             return []
 
-    def set_voice(self, voice: Union[str, AzureVoice]):
+    def set_voice(self, voice: str):
         """
         Sets the voice to be used for speech synthesis.
 
         Args:
             voice (Union[str, AzureVoice]): The voice to use.
         """
-        if isinstance(voice, AzureVoice):
-            self.voice_name = voice.full_name
-            self.language = self.voice_name[:5]
-        else:
-            installed_voices = self.get_voices()
-            for installed_voice in installed_voices:
-                if voice in installed_voice.full_name:
-                    self.voice_name = installed_voice.full_name
-                    self.language = self.voice_name[:5]
+        
+        self.voice_name = voice
+        self.language = self.voice_name[:5]
+        
+        # if isinstance(voice, AzureVoice):
+        #     self.voice_name = voice.full_name
+        #     self.language = self.voice_name[:5]
+        # else:
+        #     print("this is name!!", voice) 
+        #     installed_voices = self.get_voices()
+        #     for installed_voice in installed_voices:
+        #         if voice in installed_voice.full_name:
+        #             self.voice_name = installed_voice.full_name
+        #             self.language = self.voice_name[:5]
 
     def set_voice_parameters(self, **voice_parameters):
         """
