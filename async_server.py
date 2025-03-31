@@ -32,7 +32,7 @@ import os
 
 load_dotenv()
 
-PORT = int(os.environ.get("TTS_FASTAPI_PORT", 8000))
+PORT = int(os.environ.get("TTS_FASTAPI_PORT", 8016))
 
 SUPPORTED_ENGINES = [
     "azure"
@@ -155,8 +155,8 @@ def _set_engine(engine_name):
     else:
         current_engine = engines[engine_name]
 
-    if voices[engine_name]:
-        engines[engine_name].set_voice("ko-KR-SunHiNeural")
+    # if voices[engine_name]:
+    #     engines[engine_name].set_voice("ko-KR-SunHiNeural")
 
 
 @app.get("/set_engine")
@@ -354,7 +354,9 @@ if __name__ == "__main__":
             azure_region = os.environ.get("AZURE_SPEECH_REGION")
             if azure_api_key and azure_region:
                 print("Initializing azure engine")
-                engines["azure"] = AzureEngine(azure_api_key, azure_region, voice="ko-KR-SunHiNeural")
+                # engines["azure"] = AzureEngine(azure_api_key, azure_region, voice="ko-KR-SunHiNeural")
+                engines["azure"] = AzureEngine(azure_api_key, azure_region)
+                engines["azure"].set_emotion(emotion="angry", emotion_degree=0)
 
     for _engine in engines.keys():
         print(f"Retrieving voices for TTS Engine {_engine}")
