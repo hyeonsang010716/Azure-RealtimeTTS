@@ -13,7 +13,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y portaudio19-dev
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # 포트 오픈
-EXPOSE 8016
+EXPOSE 8007
 
 # 실행 명령
 CMD ["python", "async_server.py"]

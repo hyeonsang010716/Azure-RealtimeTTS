@@ -3,5 +3,5 @@ WORKDIR /chatbot
 ADD . .
 RUN apt-get update && apt-get -y upgrade
 RUN pip install --upgrade pip && pip install -r requirements.txt
-EXPOSE 8516
-CMD ["streamlit", "run", "Home.py", "--server.port", "8516"]
+EXPOSE 8507
+CMD ["streamlit", "run", "Home.py", "--server.port", "8507"]

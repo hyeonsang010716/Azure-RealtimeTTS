@@ -32,7 +32,7 @@ import os
 
 load_dotenv()
 
-PORT = int(os.environ.get("TTS_FASTAPI_PORT", 8016))
+PORT = int(os.environ.get("TTS_FASTAPI_PORT", 8007))
 
 SUPPORTED_ENGINES = [
     "azure"
